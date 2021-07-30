@@ -1,0 +1,29 @@
+{
+    "name": "min-repro",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "dependencies": {
+        "@babel/core": "^7.14.8",
+        "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+        "@babel/preset-env": "^7.14.8",
+        "@babel/preset-react": "^7.14.5",
+        "@babel/register": "^7.14.5",
+        "@loadable/babel-plugin": "^5.13.2",
+        "@loadable/component": "^5.15.0",
+        "babel-loader": "^8.2.2",
+        "express": "^4.17.1",
+        "nodemon": "^2.0.12",
+        "react": "^17.0.2",
+        "react-async-ssr": "^0.7.2",
+        "react-dom": "^17.0.2",
+        "react-lazy-ssr": "^0.2.4",
+        "regenerator-runtime": "^0.13.9",
+        "webpack": "^5.47.1",
+        "webpack-cli": "^4.7.2"
+    },
+    "scripts": {
+        "start": "webpack && node src/server/index.js",
+        "dev": "nodemon -e .jsx,.js -i dist --exec yarn start"
+    }
+}
