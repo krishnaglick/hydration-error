@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import lazy from "react-lazy-ssr";
+import loadable from "@loadable/component";
 
 const data = [
     {
@@ -18,9 +18,9 @@ const data = [
 ];
 
 const componentMap = {
-    circle: lazy(() => import("./Circle.component")),
-    square: lazy(() => import("./Square.component")),
-    triangle: lazy(() => import("./Triangle.component")),
+    circle: loadable(() => import("./Circle.component")),
+    square: loadable(() => import("./Square.component")),
+    triangle: loadable(() => import("./Triangle.component")),
 };
 
 const Wrapper = ({ type }) => React.createElement(componentMap[type]);
@@ -29,14 +29,15 @@ export const App = () => {
     return (
         <>
             {data.map(({ type }, i) => (
-                <React.Suspense fallback={<div>Loading</div>} key={type + i}>
-                    <Wrapper type={type} key={type + i} />
-                </React.Suspense>
+                <Wrapper type={type} key={type + i} />
             ))}
         </>
     );
 };
 
 if (typeof window !== "undefined") {
-    lazy.preloadAll().then(() => ReactDOM.hydrate(<App />, document.getElementById("app")));
+    const { loadableReady } = require("@loadable/component");
+    loadableReady(() => {
+        ReactDOM.hydrate(<App />, document.getElementById("app"));
+    });
 }

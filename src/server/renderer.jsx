@@ -1,14 +1,14 @@
 import express from "express";
 import { App } from "../client/App.component";
-import { ChunkExtractor } from "react-lazy-ssr/server";
+import { ChunkExtractor } from "@loadable/server";
 import { resolve } from "path";
 import React from "react";
 import ReactDOMServer from "react-async-ssr";
 
 export const primaryExtractor = () =>
     new ChunkExtractor({
-        stats: require(__dirname + "../../../dist/reactLazySsrStats.json"),
-        entryPoint: ["bundle"],
+        statsFile: resolve(__dirname + "../../../dist/loadable-stats.json"),
+        entrypoints: "bundle",
         publicPath: "/dist/",
     });
 const app = express();
@@ -23,8 +23,6 @@ app.use(async (_, res, next) => {
         return "";
     });
     const scriptTags = extractor.getScriptTags();
-
-    console.log("asdf: ", scriptTags);
 
     res.send(
         `<!DOCTYPE html>

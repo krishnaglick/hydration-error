@@ -11,6 +11,8 @@
         "@babel/register": "^7.14.5",
         "@loadable/babel-plugin": "^5.13.2",
         "@loadable/component": "^5.15.0",
+        "@loadable/server": "^5.15.0",
+        "@loadable/webpack-plugin": "^5.15.0",
         "babel-loader": "^8.2.2",
         "express": "^4.17.1",
         "nodemon": "^2.0.12",

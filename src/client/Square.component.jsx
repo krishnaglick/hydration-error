@@ -1,29 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-let data = "";
+let data = typeof window === "undefined" ? "" : "Square";
+let counter = 0;
 
 const func = () =>
     new Promise((res) =>
         setTimeout(() => {
-            data = "Square";
+            console.log({ counter });
+            data = "Square" + counter++;
             res();
         }, 1000)
     );
 const Square = () => {
-    return (
-        <React.Suspense fallback={<Fallback />}>
-            <Loader func={func} />
-        </React.Suspense>
-    );
+    return <Loader func={func} />;
 };
 
 const SquareImpl = ({ data }) => {
-    console.log(typeof window);
-    // if (typeof window === "undefined") {
-    //     return null;
-    // }
-    console.log({ data });
-    return <div key="square">{data}</div>;
+    // This is to mock the server giving the client stale data that we don't want to show
+    // And we then go get fresh data
+    const [clientShow, updateClientShow] = useState(false);
+    useEffect(() => {
+        setTimeout(() => updateClientShow(true), 1000);
+    }, []);
+    if (typeof window !== "undefined" && !clientShow) {
+        return null;
+    }
+    return (
+        <div key="square">
+            {data.split("").map((v, i) => (
+                <div key={v + i}>{v}</div>
+            ))}
+        </div>
+    );
 };
 
 const Fallback = () => <div key="loading">Loading</div>;
@@ -31,14 +39,14 @@ const Fallback = () => <div key="loading">Loading</div>;
 const Loader = ({ func }) => {
     return (
         <React.Suspense fallback={<Fallback />}>
-            <LoaderImpl func={func}>{(data) => console.log({ data }) || <SquareImpl data={data} />}</LoaderImpl>
+            <LoaderImpl func={func}>{(data) => <SquareImpl data={data} />}</LoaderImpl>
         </React.Suspense>
     );
 };
 
-const LoaderImpl = ({ func }) => {
+const LoaderImpl = ({ func, children }) => {
     if (data) {
-        return <SquareImpl data={data} />;
+        return children(data);
     }
     throw func();
 };
