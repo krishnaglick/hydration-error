@@ -1,4 +1,6 @@
-const LoadablePlugin = require("@loadable/webpack-plugin");
+// const LoadablePlugin = require("@loadable/webpack-plugin");
+const ReactLazySsrPlugin = require("react-lazy-ssr/webpack");
+
 const path = require("path");
 
 module.exports = {
@@ -28,8 +30,8 @@ module.exports = {
     },
     output: {
         path: path.resolve("./dist"),
-        filename: "[name].[contenthash].js",
+        filename: "client-[name].js",
         clean: true,
     },
-    plugins: [new LoadablePlugin({ writeToDisk: true })],
+    plugins: [/* new LoadablePlugin({ writeToDisk: true }), */ new ReactLazySsrPlugin()],
 };

@@ -1,14 +1,21 @@
 import express from "express";
 import { App } from "../client/App.component";
-import { ChunkExtractor } from "@loadable/server";
+// import { ChunkExtractor } from "@loadable/server";
+import { ChunkExtractor } from "react-lazy-ssr/server";
 import { resolve } from "path";
 import React from "react";
 import ReactDOMServer from "react-async-ssr";
 
-export const primaryExtractor = () =>
+// const primaryExtractor = () =>
+//     new ChunkExtractor({
+//         statsFile: resolve(__dirname + "../../../dist/loadable-stats.json"),
+//         entrypoints: "bundle",
+//         publicPath: "/dist/",
+//     });
+const primaryExtractor = () =>
     new ChunkExtractor({
-        statsFile: resolve(__dirname + "../../../dist/loadable-stats.json"),
-        entrypoints: "bundle",
+        stats: require(__dirname + "../../../dist/reactLazySsrStats.json"),
+        entryPoint: ["bundle"],
         publicPath: "/dist/",
     });
 const app = express();
